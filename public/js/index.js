@@ -18,11 +18,18 @@ socket.on('newMessage', function (message) {
 
 jQuery('#message-form').on('submit', function (e) {
   e.preventDefault();
+  var msg = jQuery('[name=message]');
+  if (msg.length>0) {
+    var msgText = $.trim(msg.val());
+    if (msgText.length>0) {
+      msg.val('');
+      socket.emit('createMessage', {
+        from: 'User',
+        text: msgText
+      }, function () {
 
-  socket.emit('createMessage', {
-    from: 'User',
-    text: jQuery('[name=message]').val()
-  }, function () {
-
-  });
+      });
+    }
+  }
+  
 });
