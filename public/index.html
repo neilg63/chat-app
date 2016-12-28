@@ -1,17 +1,24 @@
 <!DOCTYPE html>
+
 <html>
+
 <head>
-	<meta charset="utf-8">
-	<title>Welcome Page</title>
-	<link rel="stylesheet" href="">
+  <meta charset="utf-8">
 </head>
+
 <body>
-	<p>Cliche farm-to-table bicycle rights pork belly. Whatever readymade Tonx dreamcatcher. Hashtag aesthetic VHS, church-key Truffaut retro squid chillwave meggings selfies craft beer letterpress flannel. Cliche photo booth dreamcatcher, bespoke farm-to-table asymmetrical next level Austin polaroid PBR literally kale chips hella. Pitchfork authentic kale chips mustache deep v small batch. Cliche lomo pop-up street art, quinoa fanny pack aesthetic distillery mlkshk kogi. PBR&B tattooed retro Tonx.
+  <p>Welcome to the chat app</p>
 
+  <ol id="messages"></ol>
 
-</p>
+  <form id="message-form">
+    <input name="message" type="text" placeholder="Message"/>
+    <button>Send</button>
+  </form>
 
-<script src="/socket.io/socket.io.js"></script>
-<script src="/js/index.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/libs/jquery-3.1.0.min.js"></script>
+  <script src="/js/index.js"></script>
 </body>
+
 </html>
