@@ -12,6 +12,11 @@ var server = http.createServer(app);
 var io = socketIO(server);
 var users = new Users();
 
+app.get('/test-path', (req,res) => {
+  // Object.keys(req),
+  res.send({valid:true,remote: req.connection.remoteAddress})
+})
+
 app.use(express.static(publicPath));
 
 io.on('connection', (socket) => {
