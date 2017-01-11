@@ -19,8 +19,8 @@ app.get('/test-path', (req,res) => {
     if (ip == '127.0.0.1') {
       ip = '86.155.6.27';
     }
-    console.log(ip)
     href = `http://www.geoplugin.net/json.gp?ip=${ip}`;
+    var matched = false;
   request(href, (error,response,body) => {
       if (typeof body =='string') {
        var json = JSON.parse(body),
@@ -46,11 +46,15 @@ app.get('/test-path', (req,res) => {
             data[sk] = json[k];
           }
         }
-        
+        matched = true;
         res.send(data);
       }
-      
   });
+  setTimeout(() => {
+    if (!matched) {
+      res.send({valid: false,msg:"Timed out"});
+    }
+  },5000);
 })
 
 app.use(express.static(publicPath));
