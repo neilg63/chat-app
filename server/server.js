@@ -1,7 +1,9 @@
 const path = require('path');
 const http = require('http');
+const request = require('request');
 const express = require('express');
 const socketIO = require('socket.io');
+const reqIp = require('request-ip');
 const {isRealString} = require('./utils/validation');
 const {Users} = require('./utils/users');
 const {generateMessage,generateLocationMessage} = require('./utils/message');
@@ -13,8 +15,42 @@ var io = socketIO(server);
 var users = new Users();
 
 app.get('/test-path', (req,res) => {
-  // Object.keys(req),
-  res.send({valid:true,remote: req.connection.remoteAddress})
+  let ip = reqIp.getClientIp(req).split(':').pop(),href;
+    if (ip == '127.0.0.1') {
+      ip = '86.155.6.27';
+    }
+    console.log(ip)
+    href = `http://www.geoplugin.net/json.gp?ip=${ip}`;
+  request(href, (error,response,body) => {
+      if (typeof body =='string') {
+       var json = JSON.parse(body),
+         data={},skip=false,sk;
+        for (var k in json) {
+          sk = k.replace('geoplugin_','');
+          skip=false;
+          switch (sk) {
+            case 'longitude':
+              sk = 'lng';
+              break;
+            case 'latitide':
+              sk = 'lat';
+              break;
+            case 'credit':
+            case 'regionCode':
+            case 'regionCode':
+            case 'dmaCode':
+              skip= true;
+              break;
+          }
+          if (!skip) {
+            data[sk] = json[k];
+          }
+        }
+        
+        res.send(data);
+      }
+      
+  });
 })
 
 app.use(express.static(publicPath));
